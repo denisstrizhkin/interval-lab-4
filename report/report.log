@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024 Gentoo Linux) (preloaded format=pdflatex 2025.12.24)  14 JAN 2026 12:12
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024 Gentoo Linux) (preloaded format=pdflatex 2025.12.24)  14 JAN 2026 12:34
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -727,58 +727,57 @@ File: lstlang1.sty 2024/09/23 1.10c listings language file
 File: lstmisc.sty 2024/09/23 1.10c (Carsten Heinz)
 )
 Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on i
-nput line 148.
+nput line 153.
 
 
 [2]
-<images/f1_a.png, id=111, 803.0pt x 602.25pt>
+<images/f1_a.png, id=112, 803.0pt x 602.25pt>
 File: images/f1_a.png Graphic file (type png)
 <use images/f1_a.png>
-Package pdftex.def Info: images/f1_a.png  used on input line 201.
+Package pdftex.def Info: images/f1_a.png  used on input line 206.
 (pdftex.def)             Requested size: 217.66211pt x 163.24374pt.
-<images/f1_t.png, id=112, 803.0pt x 602.25pt>
+<images/f1_t.png, id=113, 803.0pt x 602.25pt>
 File: images/f1_t.png Graphic file (type png)
 <use images/f1_t.png>
-Package pdftex.def Info: images/f1_t.png  used on input line 202.
+Package pdftex.def Info: images/f1_t.png  used on input line 207.
 (pdftex.def)             Requested size: 217.66211pt x 163.24374pt.
-<images/f2_a.png, id=113, 803.0pt x 602.25pt>
+<images/f2_a.png, id=114, 803.0pt x 602.25pt>
 File: images/f2_a.png Graphic file (type png)
 <use images/f2_a.png>
-Package pdftex.def Info: images/f2_a.png  used on input line 208.
+Package pdftex.def Info: images/f2_a.png  used on input line 213.
 (pdftex.def)             Requested size: 217.66211pt x 163.24374pt.
-<images/f2_t.png, id=114, 803.0pt x 602.25pt>
+<images/f2_t.png, id=115, 803.0pt x 602.25pt>
 File: images/f2_t.png Graphic file (type png)
 <use images/f2_t.png>
-Package pdftex.def Info: images/f2_t.png  used on input line 209.
+Package pdftex.def Info: images/f2_t.png  used on input line 214.
 (pdftex.def)             Requested size: 217.66211pt x 163.24374pt.
-<images/f3_a.png, id=115, 803.0pt x 602.25pt>
+
+
+[3 <./images/f1_a.png> <./images/f1_t.png>]
+<images/f3_a.png, id=122, 803.0pt x 602.25pt>
 File: images/f3_a.png Graphic file (type png)
 <use images/f3_a.png>
-Package pdftex.def Info: images/f3_a.png  used on input line 215.
+Package pdftex.def Info: images/f3_a.png  used on input line 220.
 (pdftex.def)             Requested size: 217.66211pt x 163.24374pt.
-<images/f3_t.png, id=116, 803.0pt x 602.25pt>
+<images/f3_t.png, id=123, 803.0pt x 602.25pt>
 File: images/f3_t.png Graphic file (type png)
 <use images/f3_t.png>
-Package pdftex.def Info: images/f3_t.png  used on input line 216.
+Package pdftex.def Info: images/f3_t.png  used on input line 221.
 (pdftex.def)             Requested size: 217.66211pt x 163.24374pt.
-
-
-[3 <./images/f1_a.png> <./images/f1_t.png> <./images/f2_a.png> <./images/f2_t.p
-ng>]
 <images/f4_a.png, id=124, 803.0pt x 602.25pt>
 File: images/f4_a.png Graphic file (type png)
 <use images/f4_a.png>
-Package pdftex.def Info: images/f4_a.png  used on input line 222.
+Package pdftex.def Info: images/f4_a.png  used on input line 227.
 (pdftex.def)             Requested size: 217.66211pt x 163.24374pt.
 <images/f4_t.png, id=125, 803.0pt x 602.25pt>
 File: images/f4_t.png Graphic file (type png)
 <use images/f4_t.png>
-Package pdftex.def Info: images/f4_t.png  used on input line 223.
+Package pdftex.def Info: images/f4_t.png  used on input line 228.
 (pdftex.def)             Requested size: 217.66211pt x 163.24374pt.
 
 
-[4 <./images/f3_a.png> <./images/f3_t.png> <./images/f4_a.png> <./images/f4_t.p
-ng>]
+[4 <./images/f2_a.png> <./images/f2_t.png> <./images/f3_a.png> <./images/f3_t.p
+ng> <./images/f4_a.png> <./images/f4_t.png>]
 
 [5] (./report.aux)
  ***********
@@ -789,10 +788,10 @@ Package rerunfilecheck Info: File `report.out' has not changed.
 (rerunfilecheck)             Checksum: 0FD62867B083BAE10D3C8DD459E079B1;2817.
  ) 
 Here is how much of TeX's memory you used:
- 14927 strings out of 474682
- 223086 string characters out of 5760770
- 893775 words of memory out of 5000000
- 37568 multiletter control sequences out of 15000+600000
+ 14928 strings out of 474682
+ 223104 string characters out of 5760770
+ 893988 words of memory out of 5000000
+ 37569 multiletter control sequences out of 15000+600000
  574280 words of font info for 72 fonts, out of 8000000 for 9000
  497 hyphenation exceptions out of 8191
  75i,12n,79p,674b,1252s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -810,10 +809,10 @@ dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/share/texmf-dist/fonts/type
 1/public/cm-super/sfrm1440.pfb></usr/share/texmf-dist/fonts/type1/public/cm-sup
 er/sftt1000.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sftt1200.pfb
 >
-Output written on report.pdf (6 pages, 439126 bytes).
+Output written on report.pdf (6 pages, 441676 bytes).
 PDF statistics:
- 220 PDF objects out of 1000 (max. 8388607)
- 169 compressed objects within 2 object streams
+ 221 PDF objects out of 1000 (max. 8388607)
+ 170 compressed objects within 2 object streams
  42 named destinations out of 1000 (max. 500000)
  169 words of extra memory for PDF output out of 10000 (max. 10000000)
 
