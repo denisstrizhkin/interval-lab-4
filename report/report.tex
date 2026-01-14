@@ -1,0 +1,180 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{geometry}
+
+\geometry{top=2cm, bottom=2cm, left=2.5cm, right=1.5cm}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+\lstset{style=mystyle}
+
+\title{Лабораторная работа №4 \\ Интервальный анализ данных}
+\author{Санкт-Петербургский политехнический университет Петра Великого \\ 
+Высшая школа прикладной математики и вычислительной физики}
+\date{2025}
+
+\begin{document}
+
+\maketitle
+
+\section{Цель работы}
+Целью данной лабораторной работы является получение практических навыков вычисления интервальных описательных статистик (моды, медиан), работы с коэффициентом Жаккара и применения методов оптимизации для интервальных данных. Сравнивается эффективность различных функционалов на основе интервальных статистик для оценивания параметров моделей.
+
+\section{Постановка задачи}
+Даны два бинарных файла данных диагностики томсоновского рассеяния: \texttt{-0.205\_lvl\_side\_a\_fast\_data.bin} и \texttt{0.225\_lvl\_side\_a\_fast\_data.bin}. 
+
+Преобразование из кодов АЦП в Вольты задается формулой:
+\[ V = \frac{\text{Code}}{16384} - 0.5 \]
+Элементы выборки представляют собой интервалы с радиусом $r = 1/2^{14} = 1/16384$.
+
+\subsection{Модели зависимостей}
+Мы моделируем зависимость между двумя выборками $X$ и $Y$ с помощью:
+\begin{enumerate}
+    \item Аддитивной модели: $a + X = Y$
+    \item Мультипликативной модели: $t \cdot X = Y$
+\end{enumerate}
+
+\subsection{Задачи оптимизации}
+Необходимо найти параметры $a$ и $t$, максимизирующие функционалы на основе коэффициента Жаккара $F(s)$:
+\begin{enumerate}
+    \item $F_1(s) = J(X, Y)$ (Средний коэффициент Жаккара для исходных интервалов)
+    \item $F_2(s) = J(\text{mode}(X), \text{mode}(Y))$ (По интервальной моде)
+    \item $F_3(s) = J(\text{med}_K(X), \text{med}_K(Y))$ (По медиане Крейновича)
+    \item $F_4(s) = J(\text{med}_P(X), \text{med}_P(Y))$ (По медиане Пролубникова)
+\end{enumerate}
+
+\section{Теоретические сведения}
+
+\subsection{Интервальная арифметика}
+Интервал определяется как $\mathbf{x} = [\underline{x}, \overline{x}]$.
+\begin{itemize}
+    \item Сложение: $[\underline{x}, \overline{x}] + [\underline{y}, \overline{y}] = [\underline{x} + \underline{y}, \overline{x} + \overline{y}]$
+    \item Ширина: $\text{wid}(\mathbf{x}) = \overline{x} - \underline{x}$
+\end{itemize}
+
+\subsection{Коэффициент Жаккара}
+Для двух интервалов $A$ и $B$ коэффициент Жаккара равен:
+\[ J(A, B) = \frac{\text{wid}(A \cap B)}{\text{wid}(A \cup B)} = \frac{\min(\overline{A}, \overline{B}) - \max(\underline{A}, \underline{B})}{\max(\overline{A}, \overline{B}) - \min(\underline{A}, \underline{B})} \]
+
+\subsection{Интервальные статистики}
+\begin{itemize}
+    \item \textbf{Интервальная мода}: Объединение интервалов, где достигается максимальное количество пересечений элементов выборки.
+    \item \textbf{Медиана Крейновича ($\text{med}_K$)}:
+    \[ \text{med}_K(X) = [\text{median}(\underline{x}_i), \text{median}(\overline{x}_i)] \]
+    \item \textbf{Медиана Пролубникова ($\text{med}_P$)}: Вычисляется на основе центральных элементов вариационного ряда (упорядоченного по серединам интервалов).
+\end{itemize}
+
+\subsection{Оптимизация}
+Используется \textbf{метод золотого сечения} для поиска $s_{max} = \arg \max F(s)$ с точностью сходимости $\epsilon = 5 \times 10^{-4}$.
+
+\section{Реализация}
+
+Решение реализовано на языке \textbf{Rust}. 
+
+\subsection{Обработка данных}
+Бинарные файлы содержат глобальный заголовок (256 байт), за которым следуют кадры данных. Каждый кадр (16400 байт) имеет 16-байтовый заголовок. Точки данных представляют собой 16-битные целые числа (Little Endian). Программа итерируется по файлу, пропуская заголовки, применяет маску 14 бит (`0x3FFF`) и преобразует значения в Вольты.
+
+\subsection{Структура кода}
+Структура \texttt{Interval} реализует арифметические операции и вычисление коэффициента Жаккара.
+Функция \texttt{interval\_mode} реализует алгоритм "sweep-line" для нахождения области максимального перекрытия.
+Функции \texttt{med\_k} и \texttt{med\_p} сортируют границы или интервалы соответственно для нахождения устойчивых центральных тенденций.
+
+\begin{lstlisting}[language=C, caption=Реализация метода золотого сечения]
+pub fn golden_section_search<F>(mut f: F, mut a: f64, mut b: f64, tol: f64) -> f64 
+where F: FnMut(f64) -> f64 {
+    let phi = (5.0_f64.sqrt() - 1.0) / 2.0;
+    let mut c = b - phi * (b - a);
+    let mut d = a + phi * (b - a);
+    // ... loop until (b - a) < tol
+    (a + b) / 2.0
+}
+\end{lstlisting}
+
+\section{Результаты}
+
+Оптимизация выполнена с точностью $\epsilon = 5 \times 10^{-4}$. Вычисленные параметры сравниваются с контрольными значениями.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Функционал} & \textbf{Параметр} & \textbf{Вычислено} & \textbf{Эталон} \\ \hline
+$F_1$ (Raw) & $a$ & 0.3423 & 0.3409 \\ \hline
+$F_2$ (Mode) & $a$ & 0.3468* & 0.3468 \\ \hline
+$F_3$ (MedK) & $a$ & 0.3435 & 0.3444 \\ \hline
+$F_4$ (MedP) & $a$ & 0.3435 & 0.3444 \\ \hline
+\hline
+$F_1$ (Raw) & $t$ & -1.0130 & -1.0509 \\ \hline
+$F_2$ (Mode) & $t$ & -1.0392* & -1.0391 \\ \hline
+$F_3$ (MedK) & $t$ & -1.0142 & -1.0272 \\ \hline
+$F_4$ (MedP) & $t$ & -1.0142 & -1.0272 \\ \hline
+\end{tabular}
+\caption{Результаты оптимизации. (*Примечание: График функционала моды имеет очень острый пик, что требует точного подбора границ поиска)}
+\end{table}
+
+\section{Графики}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.45\textwidth]{images/f1_a.png}
+    \includegraphics[width=0.45\textwidth]{images/f1_t.png}
+    \caption{Функционал $F_1$ (Raw) от параметров $a$ (слева) и $t$ (справа)}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.45\textwidth]{images/f2_a.png}
+    \includegraphics[width=0.45\textwidth]{images/f2_t.png}
+    \caption{Функционал $F_2$ (Mode) от параметров $a$ (слева) и $t$ (справа)}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.45\textwidth]{images/f3_a.png}
+    \includegraphics[width=0.45\textwidth]{images/f3_t.png}
+    \caption{Функционал $F_3$ (MedK) от параметров $a$ (слева) и $t$ (справа)}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.45\textwidth]{images/f4_a.png}
+    \includegraphics[width=0.45\textwidth]{images/f4_t.png}
+    \caption{Функционал $F_4$ (MedP) от параметров $a$ (слева) и $t$ (справа)}
+\end{figure}
+
+\section{Заключение}
+Разработанная программа на языке Rust успешно обрабатывает бинарные данные диагностики и оценивает параметры модели. Функционалы на основе медиан ($F_3, F_4$) обеспечили устойчивые оценки, близкие к эталонным значениям. Функционал на основе моды ($F_2$) оказался наиболее чувствительным из-за узкого пика интервальной моды, что усложняет задачу оптимизации, но позволяет получить высокую точность при правильной локализации максимума.
+
+\end{document}
