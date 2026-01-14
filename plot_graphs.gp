@@ -2,6 +2,9 @@
 set terminal pngcairo size 800,600 enhanced font 'Verdana,10'
 set datafile separator ","
 set grid
+set autoscale yfix
+set autoscale xfix
+set offset 0,0,0.05,0.05
 
 # Creates output directory if handled by shell, but here we assume report/images exists
 # (We created it in python script previously, but let's ensure it exists via command)

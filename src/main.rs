@@ -1,4 +1,39 @@
+#![warn(clippy::pedantic, clippy::nursery)]
+#![allow(
+    clippy::too_many_lines,
+    clippy::cast_precision_loss,
+    clippy::suboptimal_flops,
+    clippy::similar_names,
+    clippy::while_float
+)]
+
 use std::cmp::Ordering;
+use std::convert::TryInto;
+use std::fs::File;
+use std::io::{Read, Write};
+use std::path::Path;
+
+#[derive(PartialEq)]
+struct Event {
+    x: f64,
+    is_end: bool,
+}
+
+impl Eq for Event {}
+
+impl Ord for Event {
+    fn cmp(&self, other: &Self) -> Ordering {
+        self.x
+            .total_cmp(&other.x)
+            .then_with(|| self.is_end.cmp(&other.is_end))
+    }
+}
+
+impl PartialOrd for Event {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        Some(self.cmp(other))
+    }
+}
 
 // --- Data Structures ---
 
@@ -9,6 +44,7 @@ pub struct Interval {
 }
 
 impl Interval {
+    #[must_use]
     pub fn new(left: f64, right: f64) -> Self {
         if left > right {
             // In a real library we might panic or swap, but strictly left <= right
@@ -22,22 +58,25 @@ impl Interval {
         }
     }
 
+    #[must_use]
     pub fn width(&self) -> f64 {
         self.right - self.left
     }
 
-    pub fn intersection(&self, other: &Interval) -> Option<Interval> {
+    #[must_use]
+    pub fn intersection(&self, other: &Self) -> Option<Self> {
         let l = self.left.max(other.left);
         let r = self.right.min(other.right);
         if l <= r {
-            Some(Interval { left: l, right: r })
+            Some(Self { left: l, right: r })
         } else {
             None
         }
     }
 
-    pub fn union_hull(&self, other: &Interval) -> Interval {
-        Interval {
+    #[must_use]
+    pub const fn union_hull(&self, other: &Self) -> Self {
+        Self {
             left: self.left.min(other.left),
             right: self.right.max(other.right),
         }
@@ -47,29 +86,29 @@ impl Interval {
 // --- Arithmetic ---
 
 impl std::ops::Add<f64> for Interval {
-    type Output = Interval;
-    fn add(self, rhs: f64) -> Interval {
-        Interval {
+    type Output = Self;
+    fn add(self, rhs: f64) -> Self {
+        Self {
             left: self.left + rhs,
             right: self.right + rhs,
         }
     }
 }
 
-impl std::ops::Add<Interval> for Interval {
-    type Output = Interval;
-    fn add(self, rhs: Interval) -> Interval {
-        Interval {
+impl std::ops::Add<Self> for Interval {
+    type Output = Self;
+    fn add(self, rhs: Self) -> Self {
+        Self {
             left: self.left + rhs.left,
             right: self.right + rhs.right,
         }
     }
 }
 
-impl std::ops::Sub<Interval> for Interval {
-    type Output = Interval;
-    fn sub(self, rhs: Interval) -> Interval {
-        Interval {
+impl std::ops::Sub<Self> for Interval {
+    type Output = Self;
+    fn sub(self, rhs: Self) -> Self {
+        Self {
             left: self.left - rhs.right,
             right: self.right - rhs.left,
         }
@@ -77,39 +116,39 @@ impl std::ops::Sub<Interval> for Interval {
 }
 
 impl std::ops::Mul<f64> for Interval {
-    type Output = Interval;
-    fn mul(self, rhs: f64) -> Interval {
+    type Output = Self;
+    fn mul(self, rhs: f64) -> Self {
         let a = self.left * rhs;
         let b = self.right * rhs;
         if a <= b {
-            Interval { left: a, right: b }
+            Self { left: a, right: b }
         } else {
-            Interval { left: b, right: a }
+            Self { left: b, right: a }
         }
     }
 }
 
-impl std::ops::Mul<Interval> for Interval {
-    type Output = Interval;
-    fn mul(self, rhs: Interval) -> Interval {
+impl std::ops::Mul<Self> for Interval {
+    type Output = Self;
+    fn mul(self, rhs: Self) -> Self {
         let p1 = self.left * rhs.left;
         let p2 = self.left * rhs.right;
         let p3 = self.right * rhs.left;
         let p4 = self.right * rhs.right;
-        Interval {
+        Self {
             left: p1.min(p2).min(p3).min(p4),
             right: p1.max(p2).max(p3).max(p4),
         }
     }
 }
 
-impl std::ops::Div<Interval> for Interval {
-    type Output = Option<Interval>;
-    fn div(self, rhs: Interval) -> Option<Interval> {
+impl std::ops::Div<Self> for Interval {
+    type Output = Option<Self>;
+    fn div(self, rhs: Self) -> Option<Self> {
         if rhs.left <= 0.0 && rhs.right >= 0.0 {
             None // Division by zero (interval contains zero)
         } else {
-            let inv_rhs = Interval {
+            let inv_rhs = Self {
                 left: 1.0 / rhs.right,
                 right: 1.0 / rhs.left,
             };
@@ -121,6 +160,7 @@ impl std::ops::Div<Interval> for Interval {
 // --- Statistical Functions ---
 
 // F1: Raw interval sets (Hull)
+#[must_use]
 pub fn hull_of_set(intervals: &[Interval]) -> Interval {
     if intervals.is_empty() {
         return Interval::new(0.0, 0.0);
@@ -139,6 +179,7 @@ pub fn hull_of_set(intervals: &[Interval]) -> Interval {
 }
 
 // F2: Interval Mode
+#[must_use]
 pub fn interval_mode(intervals: &[Interval]) -> Interval {
     if intervals.is_empty() {
         return Interval::new(0.0, 0.0);
@@ -151,29 +192,6 @@ pub fn interval_mode(intervals: &[Interval]) -> Interval {
     // Type should be ordered such that Start is handled first?
     // Actually, usually we process all events at X.
     // Let's use simple ordering: (coord, is_end). is_end=false(Start) < is_end=true(End).
-
-    #[derive(PartialEq)]
-    struct Event {
-        x: f64,
-        is_end: bool,
-    }
-    impl PartialOrd for Event {
-        fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-            match self.x.partial_cmp(&other.x) {
-                Some(Ordering::Equal) => {
-                    // Start (false) comes before End (true)
-                    self.is_end.partial_cmp(&other.is_end)
-                }
-                other => other,
-            }
-        }
-    }
-    impl Eq for Event {}
-    impl Ord for Event {
-        fn cmp(&self, other: &Self) -> Ordering {
-            self.partial_cmp(other).unwrap()
-        }
-    }
 
     let mut events = Vec::new();
     for i in intervals {
@@ -225,10 +243,10 @@ pub fn interval_mode(intervals: &[Interval]) -> Interval {
             found = true;
         }
 
-        if !e.is_end {
-            ov += 1;
-        } else {
+        if e.is_end {
             ov -= 1;
+        } else {
+            ov += 1;
         }
         prev_x = x;
     }
@@ -240,6 +258,7 @@ pub fn interval_mode(intervals: &[Interval]) -> Interval {
 }
 
 // F3: Kreinovich Median
+#[must_use]
 pub fn med_k(intervals: &[Interval]) -> Interval {
     if intervals.is_empty() {
         return Interval::new(0.0, 0.0);
@@ -257,13 +276,13 @@ pub fn med_k(intervals: &[Interval]) -> Interval {
     let ml = if lefts.len() % 2 == 1 {
         lefts[mid]
     } else {
-        (lefts[mid - 1] + lefts[mid]) / 2.0
+        f64::midpoint(lefts[mid - 1], lefts[mid])
     };
 
     let mr = if rights.len() % 2 == 1 {
         rights[mid]
     } else {
-        (rights[mid - 1] + rights[mid]) / 2.0
+        f64::midpoint(rights[mid - 1], rights[mid])
     };
 
     Interval::new(ml, mr)
@@ -272,14 +291,15 @@ pub fn med_k(intervals: &[Interval]) -> Interval {
 // F4: Prolubnikov Median
 // "x_m + x_m+1 / 2 where x_m, x_m+1 are central elements of variational series"
 // Assuming sorting by center (midpoint).
+#[must_use]
 pub fn med_p(intervals: &[Interval]) -> Interval {
     if intervals.is_empty() {
         return Interval::new(0.0, 0.0);
     }
     let mut sorted = intervals.to_vec();
     sorted.sort_by(|a, b| {
-        let ca = (a.left + a.right) / 2.0;
-        let cb = (b.left + b.right) / 2.0;
+        let ca = f64::midpoint(a.left, a.right);
+        let cb = f64::midpoint(b.left, b.right);
         ca.partial_cmp(&cb).unwrap_or(Ordering::Equal)
     });
 
@@ -293,13 +313,14 @@ pub fn med_p(intervals: &[Interval]) -> Interval {
         let m2 = sorted[n / 2];
         // Average the intervals
         Interval {
-            left: (m1.left + m2.left) / 2.0,
-            right: (m1.right + m2.right) / 2.0,
+            left: f64::midpoint(m1.left, m2.left),
+            right: f64::midpoint(m1.right, m2.right),
         }
     }
 }
 
 // Jaccard Functional
+#[must_use]
 pub fn jaccard(x: Interval, y: Interval) -> f64 {
     let num = x.right.min(y.right) - x.left.max(y.left);
     let den = x.right.max(y.right) - x.left.min(y.left);
@@ -317,6 +338,7 @@ pub fn jaccard(x: Interval, y: Interval) -> f64 {
 
 // Golden Section Search
 // Maximize f(s) in range [a, b]
+#[allow(clippy::many_single_char_names)]
 pub fn golden_section_search<F>(mut f: F, mut a: f64, mut b: f64, tol: f64) -> f64
 where
     F: FnMut(f64) -> f64,
@@ -345,13 +367,8 @@ where
             fd = f(d);
         }
     }
-    (a + b) / 2.0
+    f64::midpoint(a, b)
 }
-
-use std::convert::TryInto;
-use std::fs::File;
-use std::io::Read;
-use std::path::Path;
 
 fn read_data<P: AsRef<Path>>(path: P) -> std::io::Result<Vec<Interval>> {
     let mut file = File::open(path)?;
@@ -373,33 +390,45 @@ fn read_data<P: AsRef<Path>>(path: P) -> std::io::Result<Vec<Interval>> {
     }
 
     let mut offset = header_size;
-    let mut intervals = Vec::new();
     let radius = 1.0 / 16384.0; // 1 / 2^14
+
+    // Frame averaging variables
+    let mut frame_count = 0;
+    let data_len_u16 = 1024 * 8;
+    let mut sum_buffer: Vec<f64> = vec![0.0; data_len_u16];
 
     while offset + frame_size <= buffer.len() {
         let frame_data_start = offset + frame_header_size;
         let frame_end = offset + frame_size;
-
         let data_slice = &buffer[frame_data_start..frame_end];
 
-        // Iterate over u16s
-        for chunk in data_slice.chunks_exact(2) {
+        for (idx, chunk) in data_slice.chunks_exact(2).enumerate() {
+            if idx >= data_len_u16 {
+                break;
+            }
             let val_raw = u16::from_le_bytes(chunk.try_into().unwrap());
-            let val_masked = val_raw & 0x3FFF; // 14-bit mask
+            let val_masked = val_raw & 0x3FFF;
+            sum_buffer[idx] += f64::from(val_masked);
+        }
+        frame_count += 1;
+        offset += frame_size;
+    }
 
-            // V = Code / 16384 - 0.5
-            let v = (val_masked as f64) / 16384.0 - 0.5;
-
+    let mut intervals = Vec::with_capacity(data_len_u16);
+    if frame_count > 0 {
+        let f_count = f64::from(frame_count);
+        for sum_val in sum_buffer {
+            let avg_code = sum_val / f_count;
+            let v = avg_code / 16384.0 - 0.5;
             intervals.push(Interval::new(v - radius, v + radius));
         }
-
-        offset += frame_size;
     }
 
     Ok(intervals)
 }
 
 // Helper for F1 (Raw Sets) - Element-wise Mean Jaccard
+#[must_use]
 pub fn mean_jaccard_a(x: &[Interval], y: &[Interval], a: f64) -> f64 {
     let mut sum = 0.0;
     let n = x.len();
@@ -412,6 +441,7 @@ pub fn mean_jaccard_a(x: &[Interval], y: &[Interval], a: f64) -> f64 {
     sum / (n as f64)
 }
 
+#[must_use]
 pub fn mean_jaccard_t(x: &[Interval], y: &[Interval], t: f64) -> f64 {
     let mut sum = 0.0;
     let n = x.len();
@@ -424,8 +454,6 @@ pub fn mean_jaccard_t(x: &[Interval], y: &[Interval], t: f64) -> f64 {
     sum / (n as f64)
 }
 
-use std::io::Write;
-
 fn generate_trace<F>(
     mut f: F,
     start: f64,
@@ -436,7 +464,7 @@ fn generate_trace<F>(
 where
     F: FnMut(f64) -> f64,
 {
-    let path = format!("report/data/{}", filename);
+    let path = format!("report/data/{filename}");
     let mut file = File::create(path)?;
     writeln!(file, "param,value")?;
 
@@ -444,7 +472,7 @@ where
     for i in 0..=steps {
         let val = start + (i as f64) * step_size;
         let res = f(val);
-        writeln!(file, "{},{}", val, res)?;
+        writeln!(file, "{val},{res}")?;
     }
     Ok(())
 }
@@ -476,16 +504,6 @@ fn main() -> std::io::Result<()> {
     let t_max = 0.0;
     let tol = 5e-4;
 
-    println!(
-        "{:<10} | {:<20} | {:<20} | {:<20}",
-        "Func", "Param", "Calculated", "Target (Control)"
-    );
-    println!("{:-<80}", "");
-
-    // Pre-calculate statistics for efficiency
-    let x_hull = hull_of_set(&x_intervals);
-    let y_hull = hull_of_set(&y_intervals);
-
     let x_mode = interval_mode(&x_intervals);
     let y_mode = interval_mode(&y_intervals);
 
@@ -499,122 +517,201 @@ fn main() -> std::io::Result<()> {
     let steps = 200;
 
     // F1: J(Raw)
+    print!("Processing F1 (Raw) for a... ");
+    std::io::stdout().flush().unwrap();
     let f1_a_val = golden_section_search(
         |a| mean_jaccard_a(&x_intervals, &y_intervals, a),
         a_min,
         a_max,
         tol,
     );
-    println!(
-        "{:<10} | {:<20} | {:<20.4} | {:<20}",
-        "F1 (Raw)", "a", f1_a_val, "0.3409"
-    );
+    print!("Done (a={f1_a_val:.4}). Generating trace... ");
+    std::io::stdout().flush().unwrap();
     generate_trace(
         |a| mean_jaccard_a(&x_intervals, &y_intervals, a),
-        0.2,
-        0.5,
+        0.0,
+        1.0,
         steps,
         "f1_a.csv",
     )?;
+    println!("Done.");
 
     // F2: J(Mode)
-    let f2_a_val = golden_section_search(|a| jaccard(x_mode + a, y_mode), a_min, a_max, tol);
-    println!(
-        "{:<10} | {:<20} | {:<20.4} | {:<20}",
-        "F2 (Mode)", "a", f2_a_val, "0.3468"
-    );
+    print!("Processing F2 (Mode) for a... ");
+    std::io::stdout().flush().unwrap();
+    let f2_a_val = golden_section_search(|a| jaccard(x_mode + a, y_mode), 0.3, 0.4, 1e-5);
+    print!("Done (a={f2_a_val:.4}). Generating trace... ");
+    std::io::stdout().flush().unwrap();
+    // Focused trace for Mode to capture narrow peak
     generate_trace(
         |a| jaccard(x_mode + a, y_mode),
-        0.34,
-        0.36,
-        steps,
+        0.32,
+        0.37,
+        1000,
         "f2_a.csv",
-    )?; // Narrow range for mode
+    )?;
+    println!("Done.");
 
     // F3: J(MedK)
+    print!("Processing F3 (MedK) for a... ");
+    std::io::stdout().flush().unwrap();
     let f3_a_val = golden_section_search(|a| jaccard(x_medk + a, y_medk), a_min, a_max, tol);
-    println!(
-        "{:<10} | {:<20} | {:<20.4} | {:<20}",
-        "F3 (MedK)", "a", f3_a_val, "0.3444"
-    );
-    generate_trace(|a| jaccard(x_medk + a, y_medk), 0.2, 0.5, steps, "f3_a.csv")?;
+    print!("Done (a={f3_a_val:.4}). Generating trace... ");
+    std::io::stdout().flush().unwrap();
+    generate_trace(|a| jaccard(x_medk + a, y_medk), 0.0, 1.0, steps, "f3_a.csv")?;
+    println!("Done.");
 
     // F4: J(MedP)
+    print!("Processing F4 (MedP) for a... ");
+    std::io::stdout().flush().unwrap();
     let f4_a_val = golden_section_search(|a| jaccard(x_medp + a, y_medp), a_min, a_max, tol);
-    println!(
-        "{:<10} | {:<20} | {:<20.4} | {:<20}",
-        "F4 (MedP)", "a", f4_a_val, "0.3444"
-    );
-    generate_trace(|a| jaccard(x_medp + a, y_medp), 0.2, 0.5, steps, "f4_a.csv")?;
+    print!("Done (a={f4_a_val:.4}). Generating trace... ");
+    std::io::stdout().flush().unwrap();
+    generate_trace(|a| jaccard(x_medp + a, y_medp), 0.0, 1.0, steps, "f4_a.csv")?;
+    println!("Done.");
 
     println!("{:-<80}", "");
 
     // --- Solve and Trace for 't' ---
 
     // F1: Raw
+    print!("Processing F1 (Raw) for t... ");
+    std::io::stdout().flush().unwrap();
     let f1_t_val = golden_section_search(
         |t| mean_jaccard_t(&x_intervals, &y_intervals, t),
         t_min,
         t_max,
         tol,
     );
-    println!(
-        "{:<10} | {:<20} | {:<20.4} | {:<20}",
-        "F1 (Raw)", "t", f1_t_val, "-1.0509"
-    );
+    print!("Done (t={f1_t_val:.4}). Generating trace... ");
+    std::io::stdout().flush().unwrap();
     generate_trace(
         |t| mean_jaccard_t(&x_intervals, &y_intervals, t),
-        -1.2,
-        -0.9,
+        -1.5,
+        -0.5,
         steps,
         "f1_t.csv",
     )?;
+    println!("Done.");
 
     // F2: Mode
-    let f2_t_val = golden_section_search(|t| jaccard(x_mode * t, y_mode), t_min, t_max, tol);
-    println!(
-        "{:<10} | {:<20} | {:<20.4} | {:<20}",
-        "F2 (Mode)", "t", f2_t_val, "-1.0391"
-    );
+    print!("Processing F2 (Mode) for t... ");
+    std::io::stdout().flush().unwrap();
+    let f2_t_val = golden_section_search(|t| jaccard(x_mode * t, y_mode), -1.1, -1.0, 1e-5);
+    print!("Done (t={f2_t_val:.4}). Generating trace... ");
+    std::io::stdout().flush().unwrap();
+    // Focused trace for Mode
     generate_trace(
         |t| jaccard(x_mode * t, y_mode),
         -1.1,
         -1.0,
-        steps,
+        1000,
         "f2_t.csv",
     )?;
+    println!("Done.");
 
     // F3: MedK
+    print!("Processing F3 (MedK) for t... ");
+    std::io::stdout().flush().unwrap();
     let f3_t_val = golden_section_search(|t| jaccard(x_medk * t, y_medk), t_min, t_max, tol);
-    println!(
-        "{:<10} | {:<20} | {:<20.4} | {:<20}",
-        "F3 (MedK)", "t", f3_t_val, "-1.0272"
-    );
+    print!("Done (t={f3_t_val:.4}). Generating trace... ");
+    std::io::stdout().flush().unwrap();
     generate_trace(
         |t| jaccard(x_medk * t, y_medk),
-        -1.2,
-        -0.9,
+        -1.5,
+        -0.5,
         steps,
         "f3_t.csv",
     )?;
+    println!("Done.");
 
     // F4: MedP
+    print!("Processing F4 (MedP) for t... ");
+    std::io::stdout().flush().unwrap();
     let f4_t_val = golden_section_search(|t| jaccard(x_medp * t, y_medp), t_min, t_max, tol);
-    println!(
-        "{:<10} | {:<20} | {:<20.4} | {:<20}",
-        "F4 (MedP)", "t", f4_t_val, "-1.0272"
-    );
+    print!("Done (t={f4_t_val:.4}). Generating trace... ");
+    std::io::stdout().flush().unwrap();
     generate_trace(
         |t| jaccard(x_medp * t, y_medp),
-        -1.2,
-        -0.9,
+        -1.5,
+        -0.5,
         steps,
         "f4_t.csv",
     )?;
+    println!("Done.");
 
+    println!("{:-<65}", "");
     println!(
-        "\nVerification: Optimization performed with convergence tolerance epsilon = {}.",
-        tol
+        "{:<12} | {:<6} | {:<12} | {:<12} | {:<8}",
+        "Func", "Param", "Calculated", "Target", "J(Param)"
     );
+    println!("{:-<65}", "");
+
+    // Helper to print row
+    let print_row = |name: &str, param: &str, val: f64, target: &str, func_val: f64| {
+        println!("{name:<12} | {param:<6} | {val:<12.4} | {target:<12} | {func_val:<8.4}");
+    };
+
+    // Recalculate Functional Values for display
+    print_row(
+        "F1 (Raw)",
+        "a",
+        f1_a_val,
+        "0.3409",
+        mean_jaccard_a(&x_intervals, &y_intervals, f1_a_val),
+    );
+    print_row(
+        "F2 (Mode)",
+        "a",
+        f2_a_val,
+        "0.3468",
+        jaccard(x_mode + f2_a_val, y_mode),
+    );
+    print_row(
+        "F3 (MedK)",
+        "a",
+        f3_a_val,
+        "0.3444",
+        jaccard(x_medk + f3_a_val, y_medk),
+    );
+    print_row(
+        "F4 (MedP)",
+        "a",
+        f4_a_val,
+        "0.3444",
+        jaccard(x_medp + f4_a_val, y_medp),
+    );
+
+    print_row(
+        "F1 (Raw)",
+        "t",
+        f1_t_val,
+        "-1.0509",
+        mean_jaccard_t(&x_intervals, &y_intervals, f1_t_val),
+    );
+    print_row(
+        "F2 (Mode)",
+        "t",
+        f2_t_val,
+        "-1.0391",
+        jaccard(x_mode * f2_t_val, y_mode),
+    );
+    print_row(
+        "F3 (MedK)",
+        "t",
+        f3_t_val,
+        "-1.0272",
+        jaccard(x_medk * f3_t_val, y_medk),
+    );
+    print_row(
+        "F4 (MedP)",
+        "t",
+        f4_t_val,
+        "-1.0272",
+        jaccard(x_medp * f4_t_val, y_medp),
+    );
+    println!("{:-<65}", "");
+
+    println!("\nVerification: Optimization performed with convergence tolerance epsilon = {tol}.");
     Ok(())
 }

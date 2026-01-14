@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024 Gentoo Linux) (preloaded format=pdflatex 2025.12.24)  14 JAN 2026 08:50
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024 Gentoo Linux) (preloaded format=pdflatex 2025.12.24)  14 JAN 2026 12:10
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -604,27 +604,27 @@ File: l3backend-pdftex.def 2024-05-08 L3 backend support: PDF output (pdfTeX)
 ) (./report.aux)
 \openout1 = `report.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 48.
-LaTeX Font Info:    ... okay on input line 48.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 48.
-LaTeX Font Info:    ... okay on input line 48.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 48.
-LaTeX Font Info:    ... okay on input line 48.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 48.
-LaTeX Font Info:    ... okay on input line 48.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 48.
-LaTeX Font Info:    ... okay on input line 48.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 48.
-LaTeX Font Info:    ... okay on input line 48.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 48.
-LaTeX Font Info:    ... okay on input line 48.
-LaTeX Font Info:    Checking defaults for T2A/cmr/m/n on input line 48.
-LaTeX Font Info:    ... okay on input line 48.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 48.
-LaTeX Font Info:    ... okay on input line 48.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 48.
-LaTeX Font Info:    ... okay on input line 48.
-LaTeX Info: Redefining \th on input line 48.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for T2A/cmr/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 43.
+LaTeX Font Info:    ... okay on input line 43.
+LaTeX Info: Redefining \th on input line 43.
 (/usr/share/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count309
@@ -648,7 +648,7 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
 \c@lstlisting=\count315
-Package hyperref Info: Link coloring OFF on input line 48.
+Package hyperref Info: Link coloring OFF on input line 43.
  (./report.out)
 (./report.out)
 \@outlinefile=\write3
@@ -689,34 +689,43 @@ Package hyperref Info: Link coloring OFF on input line 48.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-LaTeX Font Info:    Trying to load font information for U+msa on input line 51.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 74.
 
 (/usr/share/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 51.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 74.
 
 
 (/usr/share/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
+
+[1
+
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texmf-dist/fonts
+/enc/dvips/cm-super/cm-super-t2a.enc}]
 LaTeX Font Info:    Trying to load font information for T2A+cmtt on input line 
-56.
+88.
 
 (/usr/share/texmf-dist/tex/latex/cyrillic/t2acmtt.fd
 File: t2acmtt.fd 2001/08/11 v1.0a Computer Modern Cyrillic font definitions
 )
-Overfull \hbox (105.12572pt too wide) in paragraph at lines 56--57
+Overfull \hbox (105.12572pt too wide) in paragraph at lines 88--89
 \T2A/cmr/m/n/12 Даны два би-нар-ных фай-ла дан-ных ди-а-гно-сти-ки том-со-нов-с
 ко-го рас-се-я-ния: \T2A/cmtt/m/n/12 -0.205_lvl_side_a_fast_data.bin
  []
 
 
 
-[1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texmf-dist/fonts
-/enc/dvips/cm-super/cm-super-t2a.enc}]
+pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.126     \item \textbf
+                       {РњРµРґРёР°РЅР° РљСЂРµР№РЅРѕРІРёС‡Р° ($\text{med}_K$)}:
+[1{/usr/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}]
 (/usr/share/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2024/09/23 1.10c listings language file
 )
@@ -724,81 +733,75 @@ File: lstlang1.sty 2024/09/23 1.10c listings language file
 File: lstmisc.sty 2024/09/23 1.10c (Carsten Heinz)
 )
 Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on i
-nput line 114.
+nput line 146.
 
 
-[2{/usr/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}]
-<images/f1_a.png, id=58, 803.0pt x 602.25pt>
+[2]
+<images/f1_a.png, id=111, 803.0pt x 602.25pt>
 File: images/f1_a.png Graphic file (type png)
 <use images/f1_a.png>
-Package pdftex.def Info: images/f1_a.png  used on input line 151.
+Package pdftex.def Info: images/f1_a.png  used on input line 199.
 (pdftex.def)             Requested size: 217.66211pt x 163.24374pt.
-<images/f1_t.png, id=59, 803.0pt x 602.25pt>
+<images/f1_t.png, id=112, 803.0pt x 602.25pt>
 File: images/f1_t.png Graphic file (type png)
 <use images/f1_t.png>
-Package pdftex.def Info: images/f1_t.png  used on input line 152.
+Package pdftex.def Info: images/f1_t.png  used on input line 200.
 (pdftex.def)             Requested size: 217.66211pt x 163.24374pt.
-<images/f2_a.png, id=60, 803.0pt x 602.25pt>
+<images/f2_a.png, id=113, 803.0pt x 602.25pt>
 File: images/f2_a.png Graphic file (type png)
 <use images/f2_a.png>
-Package pdftex.def Info: images/f2_a.png  used on input line 158.
+Package pdftex.def Info: images/f2_a.png  used on input line 206.
 (pdftex.def)             Requested size: 217.66211pt x 163.24374pt.
-<images/f2_t.png, id=61, 803.0pt x 602.25pt>
+<images/f2_t.png, id=114, 803.0pt x 602.25pt>
 File: images/f2_t.png Graphic file (type png)
 <use images/f2_t.png>
-Package pdftex.def Info: images/f2_t.png  used on input line 159.
+Package pdftex.def Info: images/f2_t.png  used on input line 207.
 (pdftex.def)             Requested size: 217.66211pt x 163.24374pt.
-
-
-[3 <./images/f1_a.png> <./images/f1_t.png>]
-<images/f3_a.png, id=81, 803.0pt x 602.25pt>
+<images/f3_a.png, id=115, 803.0pt x 602.25pt>
 File: images/f3_a.png Graphic file (type png)
 <use images/f3_a.png>
-Package pdftex.def Info: images/f3_a.png  used on input line 165.
+Package pdftex.def Info: images/f3_a.png  used on input line 213.
 (pdftex.def)             Requested size: 217.66211pt x 163.24374pt.
-<images/f3_t.png, id=82, 803.0pt x 602.25pt>
+<images/f3_t.png, id=116, 803.0pt x 602.25pt>
 File: images/f3_t.png Graphic file (type png)
 <use images/f3_t.png>
-Package pdftex.def Info: images/f3_t.png  used on input line 166.
+Package pdftex.def Info: images/f3_t.png  used on input line 214.
 (pdftex.def)             Requested size: 217.66211pt x 163.24374pt.
-<images/f4_a.png, id=83, 803.0pt x 602.25pt>
+
+
+[3 <./images/f1_a.png> <./images/f1_t.png> <./images/f2_a.png> <./images/f2_t.p
+ng>]
+<images/f4_a.png, id=124, 803.0pt x 602.25pt>
 File: images/f4_a.png Graphic file (type png)
 <use images/f4_a.png>
-Package pdftex.def Info: images/f4_a.png  used on input line 172.
+Package pdftex.def Info: images/f4_a.png  used on input line 220.
 (pdftex.def)             Requested size: 217.66211pt x 163.24374pt.
-<images/f4_t.png, id=84, 803.0pt x 602.25pt>
+<images/f4_t.png, id=125, 803.0pt x 602.25pt>
 File: images/f4_t.png Graphic file (type png)
 <use images/f4_t.png>
-Package pdftex.def Info: images/f4_t.png  used on input line 173.
+Package pdftex.def Info: images/f4_t.png  used on input line 221.
 (pdftex.def)             Requested size: 217.66211pt x 163.24374pt.
 
 
-[4 <./images/f2_a.png> <./images/f2_t.png> <./images/f3_a.png> <./images/f3_t.p
-ng> <./images/f4_a.png> <./images/f4_t.png>]
+[4 <./images/f3_a.png> <./images/f3_t.png> <./images/f4_a.png> <./images/f4_t.p
+ng>]
 
 [5] (./report.aux)
  ***********
 LaTeX2e <2024-11-01>
 L3 programming layer <2024-11-02>
  ***********
-
-
-Package rerunfilecheck Warning: File `report.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `report.out':
-(rerunfilecheck)             Before: 4665227A7F0A7ED3EA9EC8EEE8967506;720
-(rerunfilecheck)             After:  C82D22C8388E9C7AE78CDA525A6C60FE;2603.
+Package rerunfilecheck Info: File `report.out' has not changed.
+(rerunfilecheck)             Checksum: 0FD62867B083BAE10D3C8DD459E079B1;2817.
  ) 
 Here is how much of TeX's memory you used:
- 14921 strings out of 474682
- 222906 string characters out of 5760770
- 892872 words of memory out of 5000000
- 37562 multiletter control sequences out of 15000+600000
- 577687 words of font info for 84 fonts, out of 8000000 for 9000
+ 14927 strings out of 474682
+ 223086 string characters out of 5760770
+ 893775 words of memory out of 5000000
+ 37568 multiletter control sequences out of 15000+600000
+ 574280 words of font info for 72 fonts, out of 8000000 for 9000
  497 hyphenation exceptions out of 8191
- 75i,9n,79p,819b,2098s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 75i,12n,79p,674b,1252s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/
 texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texmf-dist/fon
 ts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texmf-dist/fonts/type1/public
@@ -808,15 +811,15 @@ hare/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texmf-dist
 /fonts/type1/public/cm-super/sfbx1200.pfb></usr/share/texmf-dist/fonts/type1/pu
 blic/cm-super/sfbx1440.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/s
 fbx1728.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm0600.pfb></u
-sr/share/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/share/texmf-
-dist/fonts/type1/public/cm-super/sfrm1440.pfb></usr/share/texmf-dist/fonts/type
-1/public/cm-super/sfrm2074.pfb></usr/share/texmf-dist/fonts/type1/public/cm-sup
+sr/share/texmf-dist/fonts/type1/public/cm-super/sfrm0800.pfb></usr/share/texmf-
+dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/share/texmf-dist/fonts/type
+1/public/cm-super/sfrm1440.pfb></usr/share/texmf-dist/fonts/type1/public/cm-sup
 er/sftt1000.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sftt1200.pfb
 >
-Output written on report.pdf (5 pages, 439158 bytes).
+Output written on report.pdf (6 pages, 439116 bytes).
 PDF statistics:
- 180 PDF objects out of 1000 (max. 8388607)
- 130 compressed objects within 2 object streams
- 41 named destinations out of 1000 (max. 500000)
- 73 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 220 PDF objects out of 1000 (max. 8388607)
+ 169 compressed objects within 2 object streams
+ 42 named destinations out of 1000 (max. 500000)
+ 169 words of extra memory for PDF output out of 10000 (max. 10000000)
 
