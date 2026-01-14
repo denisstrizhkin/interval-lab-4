@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024 Gentoo Linux) (preloaded format=pdflatex 2025.12.24)  14 JAN 2026 12:10
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024 Gentoo Linux) (preloaded format=pdflatex 2025.12.24)  14 JAN 2026 12:12
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -706,24 +706,18 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}{/usr/share/texmf-dist/fonts
 /enc/dvips/cm-super/cm-super-t2a.enc}]
 LaTeX Font Info:    Trying to load font information for T2A+cmtt on input line 
-88.
+89.
 
 (/usr/share/texmf-dist/tex/latex/cyrillic/t2acmtt.fd
 File: t2acmtt.fd 2001/08/11 v1.0a Computer Modern Cyrillic font definitions
 )
-Overfull \hbox (105.12572pt too wide) in paragraph at lines 88--89
-\T2A/cmr/m/n/12 Даны два би-нар-ных фай-ла дан-ных ди-а-гно-сти-ки том-со-нов-с
-ко-го рас-се-я-ния: \T2A/cmtt/m/n/12 -0.205_lvl_side_a_fast_data.bin
- []
-
-
 
 
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.126     \item \textbf
+l.128     \item \textbf
                        {РњРµРґРёР°РЅР° РљСЂРµР№РЅРѕРІРёС‡Р° ($\text{med}_K$)}:
 [1{/usr/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}]
 (/usr/share/texmf-dist/tex/latex/listings/lstlang1.sty
@@ -733,39 +727,39 @@ File: lstlang1.sty 2024/09/23 1.10c listings language file
 File: lstmisc.sty 2024/09/23 1.10c (Carsten Heinz)
 )
 Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on i
-nput line 146.
+nput line 148.
 
 
 [2]
 <images/f1_a.png, id=111, 803.0pt x 602.25pt>
 File: images/f1_a.png Graphic file (type png)
 <use images/f1_a.png>
-Package pdftex.def Info: images/f1_a.png  used on input line 199.
+Package pdftex.def Info: images/f1_a.png  used on input line 201.
 (pdftex.def)             Requested size: 217.66211pt x 163.24374pt.
 <images/f1_t.png, id=112, 803.0pt x 602.25pt>
 File: images/f1_t.png Graphic file (type png)
 <use images/f1_t.png>
-Package pdftex.def Info: images/f1_t.png  used on input line 200.
+Package pdftex.def Info: images/f1_t.png  used on input line 202.
 (pdftex.def)             Requested size: 217.66211pt x 163.24374pt.
 <images/f2_a.png, id=113, 803.0pt x 602.25pt>
 File: images/f2_a.png Graphic file (type png)
 <use images/f2_a.png>
-Package pdftex.def Info: images/f2_a.png  used on input line 206.
+Package pdftex.def Info: images/f2_a.png  used on input line 208.
 (pdftex.def)             Requested size: 217.66211pt x 163.24374pt.
 <images/f2_t.png, id=114, 803.0pt x 602.25pt>
 File: images/f2_t.png Graphic file (type png)
 <use images/f2_t.png>
-Package pdftex.def Info: images/f2_t.png  used on input line 207.
+Package pdftex.def Info: images/f2_t.png  used on input line 209.
 (pdftex.def)             Requested size: 217.66211pt x 163.24374pt.
 <images/f3_a.png, id=115, 803.0pt x 602.25pt>
 File: images/f3_a.png Graphic file (type png)
 <use images/f3_a.png>
-Package pdftex.def Info: images/f3_a.png  used on input line 213.
+Package pdftex.def Info: images/f3_a.png  used on input line 215.
 (pdftex.def)             Requested size: 217.66211pt x 163.24374pt.
 <images/f3_t.png, id=116, 803.0pt x 602.25pt>
 File: images/f3_t.png Graphic file (type png)
 <use images/f3_t.png>
-Package pdftex.def Info: images/f3_t.png  used on input line 214.
+Package pdftex.def Info: images/f3_t.png  used on input line 216.
 (pdftex.def)             Requested size: 217.66211pt x 163.24374pt.
 
 
@@ -774,12 +768,12 @@ ng>]
 <images/f4_a.png, id=124, 803.0pt x 602.25pt>
 File: images/f4_a.png Graphic file (type png)
 <use images/f4_a.png>
-Package pdftex.def Info: images/f4_a.png  used on input line 220.
+Package pdftex.def Info: images/f4_a.png  used on input line 222.
 (pdftex.def)             Requested size: 217.66211pt x 163.24374pt.
 <images/f4_t.png, id=125, 803.0pt x 602.25pt>
 File: images/f4_t.png Graphic file (type png)
 <use images/f4_t.png>
-Package pdftex.def Info: images/f4_t.png  used on input line 221.
+Package pdftex.def Info: images/f4_t.png  used on input line 223.
 (pdftex.def)             Requested size: 217.66211pt x 163.24374pt.
 
 
@@ -816,7 +810,7 @@ dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/share/texmf-dist/fonts/type
 1/public/cm-super/sfrm1440.pfb></usr/share/texmf-dist/fonts/type1/public/cm-sup
 er/sftt1000.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sftt1200.pfb
 >
-Output written on report.pdf (6 pages, 439116 bytes).
+Output written on report.pdf (6 pages, 439126 bytes).
 PDF statistics:
  220 PDF objects out of 1000 (max. 8388607)
  169 compressed objects within 2 object streams
